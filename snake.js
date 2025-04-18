@@ -26,6 +26,23 @@ var gameOver =false;
 
 var counter = 0;
 
+// Add this function to reset all game variables
+function restartGame() {
+    snakeX = blockSize * 5;
+    snakeY = blockSize * 5;
+    velocityX = 0;
+    velocityY = 0;
+    snakeBody = [];
+    gameOver = false;
+    counter = 0;
+    updateScore(); // Reset the score display
+    placeFood();
+}
+
+// Add this function to update the score display
+function updateScore() {
+    document.getElementById("scoreValue").textContent = counter;
+}
 
 window.onload = function() {
     board = document.getElementById("board");
@@ -34,7 +51,11 @@ window.onload = function() {
     context = board.getContext("2d"); //drawing
     placeFood();
     document.addEventListener("keyup", changeDirection);
-    //update();
+    
+    // Add event listener for restart button
+    document.getElementById("restartButton").addEventListener("click", restartGame);
+    
+    updateScore(); // Initialize the score display
     setInterval(update, 1000/10); //100 milliseconds
 }
 
@@ -53,6 +74,7 @@ function update(){
     if(snakeX==foodX && snakeY==foodY){
         snakeBody.push([foodX,foodY])
         counter+=1;
+        updateScore(); // Update the score display
         placeFood();
 
     }
